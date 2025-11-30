@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeLibrary - Процесс разработки</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50, #4a69bd);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background-color: #fff;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            background-color: #f1f2f6;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background-color: #dfe4ea;
+        }
+        
+        .nav-btn.active {
+            background-color: #4a69bd;
+            color: white;
+        }
+        
+        main {
+            padding: 2rem 0;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f1f2f6;
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #4a69bd;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            border: 4px solid #4a69bd;
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(odd)::after {
+            right: -13px;
+        }
+        
+        .timeline-item:nth-child(even)::after {
+            left: -13px;
+        }
+        
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .timeline-content h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .timeline-content ul {
+            margin-left: 20px;
+        }
+        
+        .timeline-content li {
+            margin-bottom: 5px;
+        }
+        
+        .week-tag {
+            display: inline-block;
+            background-color: #4a69bd;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .testing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .testing-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .testing-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .testing-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .testing-card ul {
+            margin-left: 20px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+        
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #4a69bd;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .member-role {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .progress-section {
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #f1f2f6;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4a69bd;
+            border-radius: 5px;
+            width: 100%;
+            transition: width 1s ease;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .joke-text {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .fun-fact {
+            background-color: #fff9e6;
+            border-left: 4px solid #e67e22;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:nth-child(odd)::after,
+            .timeline-item:nth-child(even)::after {
+                left: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CodeLibrary - Процесс разработки</h1>
+            <p>Как один человек создал полноценную библиотеку кода за 4 недели</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container nav-container">
+            <button class="nav-btn active" data-section="overview">Обзор проекта</button>
+            <button class="nav-btn" data-section="timeline">План разработки</button>
+            <button class="nav-btn" data-section="testing">Тестирование</button>
+            <button class="nav-btn" data-section="team">Команда</button>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <!-- Обзор проекта -->
+        <section id="overview" class="section">
+            <h2>Обзор проекта</h2>
+            <p>CodeLibrary - это полнофункциональный веб-сайт, предназначенный для хранения и организации примеров кода на различных языках программирования. Проект был полностью реализован за 4 недели.</p>
+            
+            <div class="fun-fact">
+                <strong>Забавный факт:</strong> Весь проект был создан одним человеком, который одновременно был разработчиком, тестировщиком, дизайнером, менеджером проекта и даже заказчиком!
+            </div>
+            
+            <div class="progress-section">
+                <h3>Статус проекта</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span>Начало</span>
+                    <span>100%</span>
+                    <span>Завершено</span>
+                </div>
+            </div>
+            
+            <div class="testing-grid">
+                <div class="testing-card">
+                    <h3>Цели проекта</h3>
+                    <ul>
+                        <li>Создать удобную библиотеку примеров кода</li>
+                        <li>Реализовать систему категоризации по языкам</li>
+                        <li>Обеспечить возможность просмотра и скачивания кода</li>
+                        <li>Создать адаптивный дизайн для всех устройств</li>
+                    </ul>
+                </div>
+                
+                <div class="testing-card">
+                    <h3>Технологии</h3>
+                    <ul>
+                        <li>HTML5, CSS3, JavaScript</li>
+                        <li>Адаптивный дизайн</li>
+                        <li>Локальное хранилище для примеров кода</li>
+                        <li>Git для контроля версий</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- План разработки -->
+        <section id="timeline" class="section" style="display: none;">
+            <h2>План разработки на 4 недели</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="week-tag">Неделя 1</span>
+                        <h3>Проектирование и базовая структура</h3>
+                        <ul>
+                            <li>Создание макета и прототипа</li>
+                            <li>Разработка базовой HTML-структуры</li>
+                            <li>Стилизация основных компонентов</li>
+                            <li>Настройка навигации между разделами</li>
+                        </ul>
+                        <p class="joke-text">Пришлось провести брейншторм с самим собой. Спорил о дизайне до 3 часов ночи.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="week-tag">Неделя 2</span>
+                        <h3>Функциональность и контент</h3>
+                        <ul>
+                            <li>Реализация системы отображения кода</li>
+                            <li>Добавление примеров программ</li>
+                            <li>Создание модальных окон для просмотра кода</li>
+                            <li>Реализация функции копирования кода</li>
+                        </ul>
+                        <p class="joke-text">На этой неделе я сам себе поставил дедлайн и сам же его перенес.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="week-tag">Неделя 3</span>
+                        <h3>Тестирование и оптимизация</h3>
+                        <ul>
+                            <li>Кросс-браузерное тестирование</li>
+                            <li>Тестирование на мобильных устройствах</li>
+                            <li>Оптимизация производительности</li>
+                            <li>Исправление обнаруженных ошибок</li>
+                        </ul>
+                        <p class="joke-text">Нашел 15 багов, исправил 10, остальные объявил фичами.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="week-tag">Неделя 4</span>
+                        <h3>Финальная доработка и запуск</h3>
+                        <ul>
+                            <li>Финальное тестирование всех функций</li>
+                            <li>Добавление дополнительного контента</li>
+                            <li>Подготовка к развертыванию</li>
+                            <li>Запуск сайта</li>
+                        </ul>
+                        <p class="joke-text">Сам себе написал восторженный отзыв о проделанной работе.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Тестирование -->
+        <section id="testing" class="section" style="display: none;">
+            <h2>Процесс тестирования</h2>
+            <p>Тестирование проводилось тщательно и методично, чтобы обеспечить высокое качество конечного продукта.</p>
+            
+            <div class="fun-fact">
+                <strong>Особенность процесса:</strong> При тестировании пришлось постоянно переключаться между ролями тестировщика и разработчика, что иногда приводило к забавным диалогам с самим собой.
+            </div>
+            
+            <div class="testing-grid">
+                <div class="testing-card">
+                    <h3>Функциональное тестирование</h3>
+                    <ul>
+                        <li>Проверка навигации между разделами</li>
+                        <li>Тестирование модальных окон</li>
+                        <li>Проверка копирования кода</li>
+                        <li>Тестирование адаптивности дизайна</li>
+                    </ul>
+                    <p class="joke-text">Нашел баг, ругнулся сам на себя, потом похвалил себя за быстрое исправление.</p>
+                </div>
+                
+                <div class="testing-card">
+                    <h3>Кросс-браузерное тестирование</h3>
+                    <ul>
+                        <li>Chrome, Firefox, Safari</li>
+                        <li>Edge, Internet Explorer 11</li>
+                        <li>Мобильные браузеры</li>
+                        <li>Проверка совместимости</li>
+                    </ul>
+                    <p class="joke-text">IE11 сломал мой красивый дизайн. Решил, что это проблема IE, а не моего кода.</p>
+                </div>
+                
+                <div class="testing-card">
+                    <h3>Тестирование производительности</h3>
+                    <ul>
+                        <li>Время загрузки страниц</li>
+                        <li>Оптимизация изображений</li>
+                        <li>Сжатие CSS и JavaScript</li>
+                        <li>Кэширование ресурсов</li>
+                    </ul>
+                    <p class="joke-text">Сайт грузится быстрее, чем я успеваю приготовить кофе. Идеально!</p>
+                </div>
+                
+                <div class="testing-card">
+                    <h3>Юзабилити-тестирование</h3>
+                    <ul>
+                        <li>Удобство навигации</li>
+                        <li>Читаемость кода</li>
+                        <li>Доступность для людей с ограничениями</li>
+                        <li>Интуитивность интерфейса</li>
+                    </ul>
+                    <p class="joke-text">Сам себе пользователь, сам себе фокус-группа. Удобно, не нужно никого уговаривать.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Команда -->
+        <section id="team" class="section" style="display: none;">
+            <h2>Команда проекта</h2>
+            <p>Над проектом CodeLibrary работала высококвалифицированная команда специалистов.</p>
+            
+            <div class="fun-fact">
+                <strong>Секрет успеха:</strong> Весь штат сотрудников умещается в одном человеке, что значительно сокращает расходы на кофе и совещания.
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-avatar">СГ</div>
+                    <h3>Сегеда Г.</h3>
+                    <div class="member-role">Главный разработчик</div>
+                    <p>Отвечал за всю клиентскую и серверную часть проекта. Писал код, пил кофе, исправлял баги.</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">СГ</div>
+                    <h3>Сегеда Г.</h3>
+                    <div class="member-role">Старший тестировщик</div>
+                    <p>Тщательно тестировал каждый элемент интерфейса. Нашел все баги, которые сам же и создал.</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">СГ</div>
+                    <h3>Сегеда Г.</h3>
+                    <div class="member-role">Дизайнер и UX-специалист</div>
+                    <p>Создавал макеты, подбирал цвета, спорил с разработчиком о шрифтах (и всегда побеждал).</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">СГ</div>
+                    <h3>Сегеда Г.</h3>
+                    <div class="member-role">Project Manager</div>
+                    <p>Ставил задачи, контролировал сроки, проводил планерки (в одиночестве) и мотивировал команду.</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">СГ</div>
+                    <h3>Сегеда Г.</h3>
+                    <div class="member-role">Системный администратор</div>
+                    <p>Настраивал окружение, деплоил проект и следил за тем, чтобы все работало как часы.</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">СГ</div>
+                    <h3>Сегеда Г.</h3>
+                    <div class="member-role">Технический писатель</div>
+                    <p>Писал документацию, комментарии в коде и эту самую страницу о процессе разработки.</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">СГ</div>
+                    <h3>Сегеда Г.</h3>
+                    <div class="member-role">SEO-специалист</div>
+                    <p>Оптимизировал сайт для поисковых систем, чтобы его могли найти другие одинокие разработчики.</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="member-avatar">СГ</div>
+                    <h3>Сегеда Г.</h3>
+                    <div class="member-role">Отдел кадров</div>
+                    <p>Нанял всю команду, провел собеседования и оформил все необходимые документы.</p>
+                </div>
+            </div>
+            
+            <div class="progress-section">
+                <h3>Эффективность команды</h3>
+                
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Скорость разработки</span>
+                        <span>200%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%; background-color: #4a69bd;"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Качество коммуникации</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%; background-color: #e67e22;"></div>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>Экономия на зарплатах</span>
+                        <span>∞</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%; background-color: #27ae60;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>CodeLibrary - Процесс разработки &copy; 2023</p>
+            <p>Разработано одним человеком, которому не с кем было разделить славу</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Переключение между разделами
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const sections = document.querySelectorAll('.section');
+            
+            navButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const sectionId = this.getAttribute('data-section');
+                    
+                    // Активируем выбранную кнопку
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Показываем выбранный раздел
+                    sections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    document.getElementById(sectionId).style.display = 'block';
+                });
+            });
+            
+            // Анимация прогресс-баров
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            // Функция для анимации прогресс-баров при прокрутке
+            function animateProgressBars() {
+                progressBars.forEach(bar => {
+                    const rect = bar.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom >= 0) {
+                        // Запускаем анимацию, если элемент видим
+                        const width = bar.style.width;
+                        bar.style.width = '0';
+                        setTimeout(() => {
+                            bar.style.width = width;
+                        }, 300);
+                    }
+                });
+            }
+            
+            // Запускаем анимацию при загрузке
+            setTimeout(animateProgressBars, 500);
+            
+            // И при прокрутке
+            window.addEventListener('scroll', animateProgressBars);
+        });
+    </script>
+</body>
+</html>
